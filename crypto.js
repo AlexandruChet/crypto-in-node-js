@@ -7,9 +7,8 @@ app.use(express.json());
 const algorithm = "aes-256-cbc";
 const key = crypto.randomBytes(32);
 
-const iv = crypto.randomBytes(16);
-
 function encrypt(text) {
+    const iv = crypto.randomBytes(16); // новый IV для каждого шифрования
     const cipher = crypto.createCipheriv(algorithm, key, iv);
     let encrypted = cipher.update(text, "utf-8", "hex");
     encrypted += cipher.final("hex");
@@ -20,8 +19,8 @@ function encrypt(text) {
     };
 }
 
-app.post("./submit", (req, res) => {
-    const [userName, password] = req.body;
+app.post("/submit", (req, res) => {
+    const { userName, password } = req.body;
 
     if (
         !userName ||
@@ -30,18 +29,19 @@ app.post("./submit", (req, res) => {
         typeof password !== "string"
     ) {
         return res.status(400).json({
-            error: 'invalid input'
+            error: "Invalid input",
         });
     }
+
     const encryptedPassword = encrypt(password);
 
     res.json({
-        username,
+        userName,
         password: encryptedPassword.encryptedData,
-        iv: encryptedData.iv
-    })
+        iv: encryptedPassword.iv,
+    });
 });
 
 app.listen(3000, () => {
-    console.log('Server started')
+    console.log("Server started on port 3000");
 });
