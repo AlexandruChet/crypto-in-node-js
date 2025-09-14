@@ -1,4 +1,4 @@
-```markdown
+
 # 🔐 Express Password Encryption API
 
 This project is a simple **Node.js + Express** server that demonstrates how to encrypt user passwords using the **AES-256-CBC** algorithm from Node's built-in **crypto** module.  
